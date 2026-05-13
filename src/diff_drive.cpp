@@ -1,6 +1,8 @@
 #include <AccelStepper.h>
 #include "avoidance.h"
 
+#include "id.hh"
+
 /* Motors */
 #define M1_STEP 48
 #define M1_DIR 16
@@ -31,6 +33,13 @@ constexpr float steps_per_mm_pami = STEPS_PER_MM;
 constexpr float diff_steps_per_deg_pami = STEPS_PER_DEG;
 int32_t targetLeft = 0;
 int32_t targetRight = 0;
+
+bool enable_avoiding = true;
+
+void toggle_avoiding()
+{
+  enable_avoiding = !enable_avoiding;
+}
 
 void TaskStepper(void *pvParameters)
 {                    // This is a task.
@@ -68,7 +77,8 @@ void moveStepper(float distance_mm, float speed, float acceleration)
 
   while (shouldInitMove || (stepper_left.isRunning() || stepper_right.isRunning()))
   {
-    if ((distance_mm > 0.f && getObstacleFront()) || (distance_mm < 0.f && getObstacleRear()))
+    if (enable_avoiding && 
+      ((distance_mm > 0.f && getObstacleFront()) || (distance_mm < 0.f && getObstacleRear())))
     {
       stopStepper();
       shouldInitMove = true;

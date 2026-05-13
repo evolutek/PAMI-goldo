@@ -14,6 +14,8 @@
 #include "matchTimer.h"
 #include "strategy.h"
 
+#include <EEPROM.h>
+
 #define AU_STATUS 1
 #define TIRETTE 9
 #define COLOR_BTN 4
@@ -145,6 +147,11 @@ void waitMatchEnd() {
   }
 }
 
+//#define ID_SETUP 3
+
+int32_t id = 0;
+#ifndef ID_SETUP
+
 void setup() {
   Serial.begin(115200);
 
@@ -152,6 +159,15 @@ void setup() {
   pinMode(COLOR_BTN, INPUT_PULLUP);
   pinMode(AU_STATUS, INPUT);
   
+  EEPROM.begin(4);
+  EEPROM.get(0, id);
+  EEPROM.end();
+  
+  delay(500);
+  Serial.print("id: ");
+  Serial.print(id);
+  Serial.println();
+
   init_leds();
   init_servos();
   init_pami();
@@ -229,3 +245,18 @@ void loop() {
   servo_drop();
   vTaskDelay(2000 / portTICK_PERIOD_MS);
 }
+#else
+
+void setup()
+{
+  EEPROM.begin(4);
+
+  EEPROM.put(0, ID_SETUP);
+  EEPROM.commit();
+
+  EEPROM.end();
+}
+
+void loop()
+{}
+#endif
