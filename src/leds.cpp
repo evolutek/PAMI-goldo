@@ -107,9 +107,9 @@ void show_start_pos(uint8_t pami_id, uint8_t side)
         switch (pami_id)
         {
         case 0:
-            led_colors[LED_DETECT_LEFT].r = color_table[COLOR_BLUE].r;
-            led_colors[LED_DETECT_LEFT].g = color_table[COLOR_BLUE].g;
-            led_colors[LED_DETECT_LEFT].b = color_table[COLOR_BLUE].b;
+            led_colors[LED_DETECT_RIGHT].r = color_table[COLOR_BLUE].r;
+            led_colors[LED_DETECT_RIGHT].g = color_table[COLOR_BLUE].g;
+            led_colors[LED_DETECT_RIGHT].b = color_table[COLOR_BLUE].b;
             break;
         case 1:
             led_colors[LED_DETECT_CENTER].r = color_table[COLOR_BLUE].r;
@@ -117,9 +117,9 @@ void show_start_pos(uint8_t pami_id, uint8_t side)
             led_colors[LED_DETECT_CENTER].b = color_table[COLOR_BLUE].b;
             break;
         case 2:
-            led_colors[LED_DETECT_RIGHT].r = color_table[COLOR_BLUE].r;
-            led_colors[LED_DETECT_RIGHT].g = color_table[COLOR_BLUE].g;
-            led_colors[LED_DETECT_RIGHT].b = color_table[COLOR_BLUE].b;
+            led_colors[LED_DETECT_LEFT].r = color_table[COLOR_BLUE].r;
+            led_colors[LED_DETECT_LEFT].g = color_table[COLOR_BLUE].g;
+            led_colors[LED_DETECT_LEFT].b = color_table[COLOR_BLUE].b;
             break;
         }
     }

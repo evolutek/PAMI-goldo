@@ -16,6 +16,8 @@
 
 #include <EEPROM.h>
 
+#include "id.hh"
+
 #define AU_STATUS 1
 #define TIRETTE 9
 #define COLOR_BTN 4
@@ -63,6 +65,7 @@ void switchSide() {
 }
 
 /* Function to read ID pins and display start pos */
+/*
 void init_pami() {
   pinMode(ID1, INPUT_PULLUP);
   pinMode(ID2, INPUT_PULLUP);
@@ -79,6 +82,7 @@ void init_pami() {
 
   show_start_pos(pami_id, current_side);
 }
+*/
 
 /* Task Checking button to change color */
 void TaskButton(void *pvParameters) {
@@ -147,7 +151,6 @@ void waitMatchEnd() {
   }
 }
 
-//#define ID_SETUP 3
 
 int32_t id = 0;
 #ifndef ID_SETUP
@@ -167,10 +170,11 @@ void setup() {
   Serial.print("id: ");
   Serial.print(id);
   Serial.println();
+  pami_id = id;
 
   init_leds();
   init_servos();
-  init_pami();
+  //init_pami();
   init_sensors();
   servo_drop();
   
