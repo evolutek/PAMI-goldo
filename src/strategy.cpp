@@ -80,22 +80,23 @@ void start_strat_pami_evo_2(int side)
 
 void start_strat_pami_evo_ninja(int side)
 {
-    toggle_avoiding();
     constexpr int dst = 210;
     constexpr int speed = 3000;
     constexpr int accel = 1500;
 
-    moveStepper(70, speed, accel);
+    moveStepper(70, 200, accel);
     vTaskDelay(100 / portTICK_PERIOD_MS);
 
     turnStepper(side * 90, 3000, accel);
     vTaskDelay(100 / portTICK_PERIOD_MS);
 
+    toggle_avoiding();
     moveStepper(125, 200, accel);
     vTaskDelay(100 / portTICK_PERIOD_MS);
 
     moveStepper(dst, speed, accel);
     vTaskDelay(100 / portTICK_PERIOD_MS);
+    toggle_avoiding();
 
     moveStepper(-125, 250, accel);
     vTaskDelay(100 / portTICK_PERIOD_MS);
@@ -103,6 +104,7 @@ void start_strat_pami_evo_ninja(int side)
     turnStepper(side * 93, 3000, accel);
     vTaskDelay(100 / portTICK_PERIOD_MS);
 
+    toggle_avoiding();
     moveStepper(-400, 250, accel);
     vTaskDelay(100 / portTICK_PERIOD_MS);
 
@@ -111,12 +113,14 @@ void start_strat_pami_evo_ninja(int side)
 
     moveStepper(-200, 250, accel);
     vTaskDelay(100 / portTICK_PERIOD_MS);
+    toggle_avoiding();
+
     moveStepper(200, 250, accel);
     vTaskDelay(100 / portTICK_PERIOD_MS);
     turnStepper(side * (15 + 90), 3000, accel);
     vTaskDelay(100 / portTICK_PERIOD_MS);
 
-    moveStepper(-70, 250, accel);
+    moveStepper(-55, 250, accel);
     vTaskDelay(100 / portTICK_PERIOD_MS);
     //toggle_avoiding();
 }
