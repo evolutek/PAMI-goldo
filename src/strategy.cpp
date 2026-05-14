@@ -37,28 +37,46 @@ void strat_pami_1(int side) {
 
 void strat_pami_2(int side) {
     moveStepper(-475, 3000, 1000);
+    vTaskDelay(100 / portTICK_PERIOD_MS);
     turnStepper(-1 * side * 90, 3000, 1000);
+    vTaskDelay(100 / portTICK_PERIOD_MS);
 
+    toggle_avoiding();
     moveStepper(-450, 3000, 1000);
+    vTaskDelay(100 / portTICK_PERIOD_MS);
     moveStepper(50, 3000, 1000);
+    vTaskDelay(100 / portTICK_PERIOD_MS);
+    toggle_avoiding();
 
     turnStepper(side * 90, 3000, 1000);
+    vTaskDelay(100 / portTICK_PERIOD_MS);
     moveStepper(-300, 3000, 1000);
+    vTaskDelay(100 / portTICK_PERIOD_MS);
     turnStepper(-1 * side * 90, 3000, 1000);
+    vTaskDelay(100 / portTICK_PERIOD_MS);
 
     moveStepper(-300, 3000, 1000);
+    vTaskDelay(100 / portTICK_PERIOD_MS);
 
     turnStepper(side * 90, 3000, 1000);
+    vTaskDelay(100 / portTICK_PERIOD_MS);
     servo_drop_l();
+    vTaskDelay(100 / portTICK_PERIOD_MS);
     turnStepper(-1 * side * 90, 3000, 1000);
+    vTaskDelay(100 / portTICK_PERIOD_MS);
 
     moveStepper(-300, 3000, 1000);
+    vTaskDelay(100 / portTICK_PERIOD_MS);
 
     turnStepper(30 * side, 3000, 1000);
+    vTaskDelay(100 / portTICK_PERIOD_MS);
     servo_drop_r();
+    vTaskDelay(100 / portTICK_PERIOD_MS);
     turnStepper(-1 * (30 + 90) * side, 3000, 1000);
+    vTaskDelay(100 / portTICK_PERIOD_MS);
 
     moveStepper(-200, 3000, 1000);
+    vTaskDelay(100 / portTICK_PERIOD_MS);
 }
 
 /*
@@ -174,7 +192,7 @@ void TaskStrategy(void* pvParameters)
     // start_straight_line(SIDE_BLUE);
     int inverse = current_side == SIDE_YELLOW ? 1 : -1;
     if (id == 1)
-        start_pami_1(inverse);
+        strat_pami_1(inverse);
     else if (id == 2)
         strat_pami_2(inverse);
     else if (id == 4) // debug
