@@ -103,16 +103,20 @@ void start_strat_pami_evo_ninja(int side)
     turnStepper(side * 93, 3000, accel);
     vTaskDelay(100 / portTICK_PERIOD_MS);
 
-    moveStepper(-600, 250, accel);
+    moveStepper(-400, 250, accel);
     vTaskDelay(100 / portTICK_PERIOD_MS);
 
-    moveStepper(100, 250, accel);
-
-    vTaskDelay(100 / portTICK_PERIOD_MS);
-    turnStepper(side * 90, 3000, accel);
+    turnStepper(-side * 15, 3000, accel);
     vTaskDelay(100 / portTICK_PERIOD_MS);
 
-    moveStepper(-90, 250, accel);
+    moveStepper(-200, 250, accel);
+    vTaskDelay(100 / portTICK_PERIOD_MS);
+    moveStepper(200, 250, accel);
+    vTaskDelay(100 / portTICK_PERIOD_MS);
+    turnStepper(side * (15 + 90), 3000, accel);
+    vTaskDelay(100 / portTICK_PERIOD_MS);
+
+    moveStepper(-70, 250, accel);
     vTaskDelay(100 / portTICK_PERIOD_MS);
     //toggle_avoiding();
 }
