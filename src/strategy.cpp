@@ -129,42 +129,49 @@ void start_strat_pami_evo_2(int side)
 
 void start_strat_pami_evo_ninja(int side)
 {
-    constexpr int dst = 320;
-    constexpr int speed = 2500;
-    constexpr int accel = 1000;
+    constexpr int dst = 210;
+    constexpr int speed = 3000;
+    constexpr int accel = 1500;
+
+    moveStepper(70, 200, accel);
+    vTaskDelay(100 / portTICK_PERIOD_MS);
+
     turnStepper(side * 90, 3000, accel);
     vTaskDelay(100 / portTICK_PERIOD_MS);
 
     toggle_avoiding();
+    moveStepper(125, 200, accel);
+    vTaskDelay(100 / portTICK_PERIOD_MS);
+
     moveStepper(dst, speed, accel);
     vTaskDelay(100 / portTICK_PERIOD_MS);
     toggle_avoiding();
 
-    moveStepper(-dst, speed / 2, accel);
+    moveStepper(-125, 250, accel);
     vTaskDelay(100 / portTICK_PERIOD_MS);
 
-    turnStepper(-side * 90, 3000, accel);
-    vTaskDelay(100 / portTICK_PERIOD_MS);
-
-    moveStepper(110, 1000, 500);
-    vTaskDelay(100 / portTICK_PERIOD_MS);
-
-    turnStepper(side * 90, 3000, accel);
+    turnStepper(side * 93, 3000, accel);
     vTaskDelay(100 / portTICK_PERIOD_MS);
 
     toggle_avoiding();
-    moveStepper(dst, speed, accel);
+    moveStepper(-400, 250, accel);
+    vTaskDelay(100 / portTICK_PERIOD_MS);
+
+    turnStepper(-side * 15, 3000, accel);
+    vTaskDelay(100 / portTICK_PERIOD_MS);
+
+    moveStepper(-200, 250, accel);
     vTaskDelay(100 / portTICK_PERIOD_MS);
     toggle_avoiding();
 
-    moveStepper(-dst / 2 - 50, speed, accel);
+    moveStepper(200, 250, accel);
+    vTaskDelay(100 / portTICK_PERIOD_MS);
+    turnStepper(side * (15 + 90), 3000, accel);
     vTaskDelay(100 / portTICK_PERIOD_MS);
 
-    turnStepper(side * 90, 3000, accel);
+    moveStepper(-55, 250, accel);
     vTaskDelay(100 / portTICK_PERIOD_MS);
-
-    moveStepper(-250, speed, accel);
-    vTaskDelay(100 / portTICK_PERIOD_MS);
+    //toggle_avoiding();
 }
 
 void TaskStrategy(void* pvParameters)
@@ -173,15 +180,31 @@ void TaskStrategy(void* pvParameters)
 
     // start_straight_line(SIDE_BLUE);
     int inverse = current_side == SIDE_YELLOW ? 1 : -1;
-    if (id == 1)
-        start_pami_1(inverse);
-    else if (id == 2)
-        strat_pami_2(inverse);
-    else if (id == 4) // debug
-        start_straight_line(inverse);
-    else
+    if (id == 0)
+        start_strat_pami_evo_1(inverse);
+    else if (id == 1)
+        start_strat_pami_evo_2(inverse);
+    else if (id ==2)
         start_strat_pami_evo_ninja(inverse);
-
+    else
+        Serial.println("no strat specified for this id");
+    /*
+    if(current_side == SIDE_YELLOW) {
+        if(pami_id == 0)
+            strat_groupie2_yellow_evo();
+        else if(pami_id == 1)
+            strat_groupie2_yellow_evo();
+        else if(pami_id == 2)
+            strat_groupie3_yellow_evo();
+    } else if(current_side == SIDE_BLUE) {
+        if(pami_id == 0)
+            strat_groupie2_blue_evo();
+        else if(pami_id == 1)
+            strat_groupie2_blue_evo();
+        else if(pami_id == 2)
+            strat_groupie3_blue_evo();
+    }
+    */
     stopStepper();
     disableSteppers();
     vTaskDelete(NULL);
