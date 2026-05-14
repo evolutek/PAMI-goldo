@@ -174,9 +174,9 @@ void TaskStrategy(void* pvParameters)
     // start_straight_line(SIDE_BLUE);
     int inverse = current_side == SIDE_YELLOW ? 1 : -1;
     if (id == 1)
-        start_strat_pami_evo_1(inverse);
+        start_pami_1(inverse);
     else if (id == 2)
-        start_strat_pami_evo_2(inverse);
+        strat_pami_2(inverse);
     else if (id == 4) // debug
         start_straight_line(inverse);
     else
