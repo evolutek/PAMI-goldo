@@ -80,42 +80,38 @@ void start_strat_pami_evo_2(int side)
 
 void start_strat_pami_evo_ninja(int side)
 {
-    constexpr int dst = 320;
-    constexpr int speed = 2500;
-    constexpr int accel = 1000;
+    toggle_avoiding();
+    constexpr int dst = 210;
+    constexpr int speed = 3000;
+    constexpr int accel = 1500;
+
+    moveStepper(64, speed, accel);
+    vTaskDelay(100 / portTICK_PERIOD_MS);
+
     turnStepper(side * 90, 3000, accel);
     vTaskDelay(100 / portTICK_PERIOD_MS);
 
-    toggle_avoiding();
+    moveStepper(145, 200, accel);
+    vTaskDelay(100 / portTICK_PERIOD_MS);
+
     moveStepper(dst, speed, accel);
     vTaskDelay(100 / portTICK_PERIOD_MS);
-    toggle_avoiding();
 
-    moveStepper(-dst, speed / 2, accel);
+    moveStepper(-145, 250, accel);
     vTaskDelay(100 / portTICK_PERIOD_MS);
 
-    turnStepper(-side * 90, 3000, accel);
+    turnStepper(side * 93, 3000, accel);
     vTaskDelay(100 / portTICK_PERIOD_MS);
 
-    moveStepper(110, 1000, 500);
-    vTaskDelay(100 / portTICK_PERIOD_MS);
-
-    turnStepper(side * 90, 3000, accel);
-    vTaskDelay(100 / portTICK_PERIOD_MS);
-
-    toggle_avoiding();
-    moveStepper(dst, speed, accel);
-    vTaskDelay(100 / portTICK_PERIOD_MS);
-    toggle_avoiding();
-
-    moveStepper(-dst / 2 - 50, speed, accel);
+    moveStepper(-200, 250, accel);
     vTaskDelay(100 / portTICK_PERIOD_MS);
 
     turnStepper(side * 90, 3000, accel);
     vTaskDelay(100 / portTICK_PERIOD_MS);
 
-    moveStepper(-250, speed, accel);
-    vTaskDelay(100 / portTICK_PERIOD_MS);
+    //moveStepper(-140, 250, accel);
+    //vTaskDelay(100 / portTICK_PERIOD_MS);
+    //toggle_avoiding();
 }
 
 void TaskStrategy(void* pvParameters)
@@ -128,10 +124,10 @@ void TaskStrategy(void* pvParameters)
         start_strat_pami_evo_1(inverse);
     else if (id == 1)
         start_strat_pami_evo_2(inverse);
-    else if (id == 4) // debug
-        start_straight_line(inverse);
-    else
+    else if (id ==2)
         start_strat_pami_evo_ninja(inverse);
+    else
+        Serial.println("no strat specified for this id");
     /*
     if(current_side == SIDE_YELLOW) {
         if(pami_id == 0)

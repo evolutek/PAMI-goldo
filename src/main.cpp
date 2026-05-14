@@ -126,6 +126,12 @@ void waitTirette() {
 
 /* function to wait start time */
 void waitStart() {
+  if(pami_id == PAMI_NINJA)
+  {
+    vTaskDelay(500 / portTICK_PERIOD_MS);
+    return;
+  }
+
   uint8_t count = 0;
   while (getMatchTime() < pamiStartTime) {
     vTaskDelay(50 / portTICK_PERIOD_MS);
