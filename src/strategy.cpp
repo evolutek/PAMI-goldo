@@ -36,13 +36,13 @@ void strat_pami_1(int side) {
 }
 
 void strat_pami_2(int side) {
-    moveStepper(-475, 3000, 1000);
+    moveStepper(-500, 3000, 1000);
     vTaskDelay(100 / portTICK_PERIOD_MS);
     turnStepper(-1 * side * 90, 3000, 1000);
     vTaskDelay(100 / portTICK_PERIOD_MS);
 
     toggle_avoiding();
-    moveStepper(-450, 3000, 1000);
+    moveStepper(-550, 3000, 1000);
     vTaskDelay(100 / portTICK_PERIOD_MS);
     moveStepper(50, 3000, 1000);
     vTaskDelay(100 / portTICK_PERIOD_MS);
@@ -141,23 +141,7 @@ void TaskStrategy(void* pvParameters)
         strat_pami_ninja(inverse);
     else
         Serial.println("no strat specified for this id");
-    /*
-    if(current_side == SIDE_YELLOW) {
-        if(pami_id == 0)
-            strat_groupie2_yellow_evo();
-        else if(pami_id == 1)
-            strat_groupie2_yellow_evo();
-        else if(pami_id == 2)
-            strat_groupie3_yellow_evo();
-    } else if(current_side == SIDE_BLUE) {
-        if(pami_id == 0)
-            strat_groupie2_blue_evo();
-        else if(pami_id == 1)
-            strat_groupie2_blue_evo();
-        else if(pami_id == 2)
-            strat_groupie3_blue_evo();
-    }
-    */
+    
     stopStepper();
     disableSteppers();
     vTaskDelete(NULL);
