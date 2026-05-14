@@ -17,22 +17,41 @@ extern uint8_t pami_id;
 */
 
 void strat_pami_1(int side) {
-    servo_drop_r();
-    vTaskDelay(1000 / portTICK_PERIOD_MS);
-
-    moveStepper(-500, 3000, 1000);
-    turnStepper(-1 * side * 90, 3000, 1000);
-
-    moveStepper(-600, 3000, 1000);
-
-    turnStepper(side * 90, 3000, 1000);
     servo_drop_l();
-    turnStepper(-1 * side * 90, 3000, 1000);
+    vTaskDelay(400 / portTICK_PERIOD_MS);
 
-    moveStepper(-50, 3000, 1000);
+    moveStepper(-500, 2000, 900);
+    vTaskDelay(100 / portTICK_PERIOD_MS);
+    turnStepper(-1 * side * 90, 3000, 1000);
+    vTaskDelay(100 / portTICK_PERIOD_MS);
+
+    // recal
+    toggle_avoiding();
+    moveStepper(100, 500, 300);
+    moveStepper(-50, 500, 300);
+    toggle_avoiding();
+
+    vTaskDelay(100 / portTICK_PERIOD_MS);
+    moveStepper(-520, 2000, 900);
+    vTaskDelay(100 / portTICK_PERIOD_MS);
 
     turnStepper(side * 90, 3000, 1000);
-    moveStepper(-250, 3000, 1000);
+    vTaskDelay(100 / portTICK_PERIOD_MS);
+    servo_drop_r();
+    vTaskDelay(400 / portTICK_PERIOD_MS);
+
+    moveStepper(-100, 3000, 1000);
+    turnStepper(-1 * side * 90, 3000, 1000);
+
+    toggle_avoiding();
+    vTaskDelay(100 / portTICK_PERIOD_MS);
+    moveStepper(-200, 3000, 1000);
+    vTaskDelay(100 / portTICK_PERIOD_MS);
+    turnStepper(side * 90, 3000, 1000);
+    toggle_avoiding();
+
+    vTaskDelay(100 / portTICK_PERIOD_MS);
+    moveStepper(-400, 3000, 1000);
 }
 
 void strat_pami_2(int side) {
@@ -60,72 +79,6 @@ void strat_pami_2(int side) {
 
     moveStepper(-200, 3000, 1000);
 }
-
-/*
-    Evolutek Strategies Belgique 2026
-*/
-
-void start_straight_line(int side)
-{
-    // moveStepper(-2000, 750, 500);
-    // moveStepper(500, 750, 500);
-    moveStepper(3000, 500, 1000);
-}
-
-void start_strat_pami_evo_1(int side)
-{
-    moveStepper(-600, 1000, 500);
-    vTaskDelay(100 / portTICK_PERIOD_MS);
-
-    servo_drop_r();
-    vTaskDelay(1000 / portTICK_PERIOD_MS);
-
-    int angle = 20;
-
-    // rotate
-    turnStepper(-1 * side * angle, 3000, 1000);
-    vTaskDelay(100 / portTICK_PERIOD_MS);
-
-    // drop
-    servo_drop_l();
-    vTaskDelay(1000 / portTICK_PERIOD_MS);
-
-    // rotate
-    turnStepper(-1 * side * (45 - angle), 3000, 1000);
-    vTaskDelay(100 / portTICK_PERIOD_MS);
-
-    moveStepper(-760, 1000, 500);
-    vTaskDelay(100 / portTICK_PERIOD_MS);
-}
-
-void start_strat_pami_evo_2(int side)
-{
-    moveStepper(-800, 1000, 500);
-    vTaskDelay(100 / portTICK_PERIOD_MS);
-
-    turnStepper(side * -90, 3000, 1000);
-    vTaskDelay(100 / portTICK_PERIOD_MS);
-
-    turnStepper(side * 15, 3000, 1000);
-    vTaskDelay(100 / portTICK_PERIOD_MS);
-
-    servo_drop_r();
-    servo_drop_l();
-    vTaskDelay(500 / portTICK_PERIOD_MS);
-
-    turnStepper(-side * 15, 3000, 1000);
-    vTaskDelay(100 / portTICK_PERIOD_MS);
-
-    moveStepper(-400, 1000, 500);
-    vTaskDelay(100 / portTICK_PERIOD_MS);
-
-    turnStepper(-side * 40, 3000, 1000);
-    vTaskDelay(100 / portTICK_PERIOD_MS);
-
-    moveStepper(-345, 1000, 500);
-    vTaskDelay(100 / portTICK_PERIOD_MS);
-}
-
 
 void start_strat_pami_evo_ninja(int side)
 {
@@ -181,30 +134,14 @@ void TaskStrategy(void* pvParameters)
     // start_straight_line(SIDE_BLUE);
     int inverse = current_side == SIDE_YELLOW ? 1 : -1;
     if (id == 0)
-        start_strat_pami_evo_1(inverse);
+        strat_pami_1(inverse);
     else if (id == 1)
-        start_strat_pami_evo_2(inverse);
+        strat_pami_2(inverse);
     else if (id ==2)
         start_strat_pami_evo_ninja(inverse);
     else
         Serial.println("no strat specified for this id");
-    /*
-    if(current_side == SIDE_YELLOW) {
-        if(pami_id == 0)
-            strat_groupie2_yellow_evo();
-        else if(pami_id == 1)
-            strat_groupie2_yellow_evo();
-        else if(pami_id == 2)
-            strat_groupie3_yellow_evo();
-    } else if(current_side == SIDE_BLUE) {
-        if(pami_id == 0)
-            strat_groupie2_blue_evo();
-        else if(pami_id == 1)
-            strat_groupie2_blue_evo();
-        else if(pami_id == 2)
-            strat_groupie3_blue_evo();
-    }
-    */
+
     stopStepper();
     disableSteppers();
     vTaskDelete(NULL);
