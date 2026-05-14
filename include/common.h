@@ -7,4 +7,6 @@ enum side {
     SIDE_BLUE,
 };
 
+extern enum side current_side;
+
 #endif /* COMMON_H */

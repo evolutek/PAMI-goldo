@@ -61,7 +61,7 @@ void strat_pami_2(int side) {
     turnStepper(side * 90, 3000, 1000);
     vTaskDelay(100 / portTICK_PERIOD_MS);
     servo_drop_l();
-    vTaskDelay(100 / portTICK_PERIOD_MS);
+    vTaskDelay(500 / portTICK_PERIOD_MS);
     turnStepper(-1 * side * 90, 3000, 1000);
     vTaskDelay(100 / portTICK_PERIOD_MS);
 
@@ -71,7 +71,7 @@ void strat_pami_2(int side) {
     turnStepper(30 * side, 3000, 1000);
     vTaskDelay(100 / portTICK_PERIOD_MS);
     servo_drop_r();
-    vTaskDelay(100 / portTICK_PERIOD_MS);
+    vTaskDelay(500 / portTICK_PERIOD_MS);
     turnStepper(-1 * (30 + 90) * side, 3000, 1000);
     vTaskDelay(100 / portTICK_PERIOD_MS);
 

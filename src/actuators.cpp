@@ -1,5 +1,6 @@
 #include <Servo.h>
 #include "actuators.h"
+#include "common.h"
 
 /* Servos */
 #define SERVO1 17
@@ -38,9 +39,15 @@ void servo_drop() {
 }
 
 void servo_drop_l() {
-    servos.write(SERVO_L, 60);
+    if (current_side == SIDE_YELLOW)
+        servos.write(SERVO_L, 60);
+    else
+        servos.write(SERVO_R, 60);
 }
 
 void servo_drop_r() {
-    servos.write(SERVO_R, 110);
+    if (current_side == SIDE_YELLOW)
+        servos.write(SERVO_R, 110);
+    else
+        servos.write(SERVO_L, 110);
 }
