@@ -13,6 +13,55 @@ extern enum side current_side;
 extern uint8_t pami_id;
 
 /*
+    Evolutek Strategies France 2026
+*/
+
+void strat_pami_1(int side) {
+    servo_drop_r();
+    vTaskDelay(1000 / portTICK_PERIOD_MS);
+
+    moveStepper(-500, 3000, 1000);
+    turnStepper(-1 * side * 90, 3000, 1000);
+
+    moveStepper(-600, 3000, 1000);
+
+    turnStepper(side * 90, 3000, 1000);
+    servo_drop_l();
+    turnStepper(-1 * side * 90, 3000, 1000);
+
+    moveStepper(-50, 3000, 1000);
+
+    turnStepper(side * 90, 3000, 1000);
+    moveStepper(-250, 3000, 1000);
+}
+
+void strat_pami_2(int side) {
+    moveStepper(-475, 3000, 1000);
+    turnStepper(-1 * side * 90, 3000, 1000);
+
+    moveStepper(-450, 3000, 1000);
+    moveStepper(50, 3000, 1000);
+
+    turnStepper(side * 90, 3000, 1000);
+    moveStepper(-300, 3000, 1000);
+    turnStepper(-1 * side * 90, 3000, 1000);
+
+    moveStepper(-300, 3000, 1000);
+
+    turnStepper(side * 90, 3000, 1000);
+    servo_drop_l();
+    turnStepper(-1 * side * 90, 3000, 1000);
+
+    moveStepper(-300, 3000, 1000);
+
+    turnStepper(30 * side, 3000, 1000);
+    servo_drop_r();
+    turnStepper(-1 * (30 + 90) * side, 3000, 1000);
+
+    moveStepper(-200, 3000, 1000);
+}
+
+/*
     Evolutek Strategies Belgique 2026
 */
 
