@@ -94,14 +94,50 @@ void strat_pami_1(int side) {
 }
 
 void strat_pami_2(int side) {
-    moveStepper(-475, 3000, 1000);
+    moveStepper(-500, 3000, 1000);
+    vTaskDelay(100 / portTICK_PERIOD_MS);
     turnStepper(-1 * side * 90, 3000, 1000);
+    vTaskDelay(100 / portTICK_PERIOD_MS);
 
-    moveStepper(-450, 3000, 1000);
+    toggle_avoiding();
+    moveStepper(-550, 3000, 1000);
+    vTaskDelay(100 / portTICK_PERIOD_MS);
     moveStepper(50, 3000, 1000);
+    vTaskDelay(100 / portTICK_PERIOD_MS);
+    toggle_avoiding();
 
     turnStepper(side * 90, 3000, 1000);
+    vTaskDelay(100 / portTICK_PERIOD_MS);
     moveStepper(-300, 3000, 1000);
+    vTaskDelay(100 / portTICK_PERIOD_MS);
+    turnStepper(-1 * side * 90, 3000, 1000);
+    vTaskDelay(100 / portTICK_PERIOD_MS);
+
+    moveStepper(-400, 3000, 1000);
+    vTaskDelay(100 / portTICK_PERIOD_MS);
+
+    turnStepper(side * 90, 3000, 1000);
+    vTaskDelay(100 / portTICK_PERIOD_MS);
+    servo_drop_l();
+    vTaskDelay(500 / portTICK_PERIOD_MS);
+    turnStepper(-1 * side * 90, 3000, 1000);
+    vTaskDelay(100 / portTICK_PERIOD_MS);
+
+    moveStepper(-200, 3000, 1000);
+    vTaskDelay(100 / portTICK_PERIOD_MS);
+
+    turnStepper(30 * side, 3000, 1000);
+    vTaskDelay(100 / portTICK_PERIOD_MS);
+    servo_drop_r();
+    vTaskDelay(500 / portTICK_PERIOD_MS);
+    turnStepper(-1 * (30 + 90) * side, 3000, 1000);
+    vTaskDelay(100 / portTICK_PERIOD_MS);
+
+    moveStepper(-200, 3000, 1000);
+    vTaskDelay(100 / portTICK_PERIOD_MS);
+}
+
+void strat_pami_ninja(int side)
     turnStepper(-1 * side * 90, 3000, 1000);
 
     moveStepper(-300, 3000, 1000);
@@ -110,7 +146,7 @@ void strat_pami_2(int side) {
     servo_drop_l();
     turnStepper(-1 * side * 90, 3000, 1000);
 
-    moveStepper(-300, 3000, 1000);
+    moveStepper(-300, 3000, 1000);\
 
     turnStepper(30 * side, 3000, 1000);
     servo_drop_r();
@@ -172,14 +208,16 @@ void TaskStrategy(void* pvParameters)
 
     // start_straight_line(SIDE_BLUE);
     int inverse = current_side == SIDE_YELLOW ? 1 : -1;
+
     if (id == 0)
         strat_pami_1(inverse);
     else if (id == 1)
         strat_pami_2(inverse);
     else if (id ==2)
-        start_strat_pami_evo_ninja(inverse);
+        strat_pami_ninja(inverse);
     else
         Serial.println("no strat specified for this id");
+    
 
     stopStepper();
     disableSteppers();
