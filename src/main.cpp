@@ -64,26 +64,6 @@ void switchSide() {
   show_start_pos(pami_id, current_side);
 }
 
-/* Function to read ID pins and display start pos */
-/*
-void init_pami() {
-  pinMode(ID1, INPUT_PULLUP);
-  pinMode(ID2, INPUT_PULLUP);
-
-  if(digitalRead(ID1) == HIGH && digitalRead(ID2) == HIGH) {
-    pami_id = 0; // Not implemented
-  } else if(digitalRead(ID1) == HIGH && digitalRead(ID2) == LOW) {
-    pami_id = 0; // SUPERSTAR
-  } else if(digitalRead(ID1) == LOW && digitalRead(ID2) == HIGH) {
-    pami_id = 1; // PAMI ID 2
-  } else if(digitalRead(ID1) == LOW && digitalRead(ID2) == LOW) {
-    pami_id = 2; // PAMI ID 3
-  }
-
-  show_start_pos(pami_id, current_side);
-}
-*/
-
 /* Task Checking button to change color */
 void TaskButton(void *pvParameters) {
   uint8_t currentState;
@@ -145,6 +125,7 @@ void waitStart() {
     else
       count = 0;
   }
+  
   servo_lift();
   /* Add 500ms just in case to avoid jumpstart */
   vTaskDelay(500 / portTICK_PERIOD_MS);
@@ -155,6 +136,24 @@ void waitMatchEnd() {
   while (getMatchTime() < matchTotalDuration) {
     vTaskDelay(50 / portTICK_PERIOD_MS);
   }
+}
+
+void waitPreparationStart() {
+  if (pami_id == PAMI_NINJA)
+    return;
+
+  while (getMatchTime() < preparationStart)
+    vTaskDelay(50 / portTICK_PERIOD_MS);
+
+  servo_lift();
+}
+
+void waitPreparationEnd() {
+  if (pami_id == PAMI_NINJA)
+    return;
+
+  while (getMatchTime() < preparationEnd)
+    vTaskDelay(50 / portTICK_PERIOD_MS);
 }
 
 
@@ -190,7 +189,7 @@ void setup() {
   // If color button down, set Debug Mode
   if(!digitalRead(COLOR_BTN)){
     // Set Debug Mode
-    matchInitTime = -(pamiStartTime - 0) * 1000; //seconds (wait 0s after tirette in debug)
+    matchInitTime = -(preparationStart - 0) * 1000; //seconds (wait 0s after tirette in debug)
     front_leds_color(COLOR_RED);
   }
   else {
@@ -229,6 +228,10 @@ void setup() {
   
   startMatchTimer(matchInitTime);
 
+  waitPreparationStart();
+  xTaskCreatePinnedToCore(TaskPreparationStrategy, "Task Preparation Strategy" ,4096,NULL,2, NULL, 0);
+  waitPreparationEnd();
+
   waitStart();
   
   /* Start Match */
@@ -239,7 +242,6 @@ void setup() {
   xTaskCreate(TaskAvoidance, "Task Avoidance", 4096, NULL, 1, NULL);
   /* Task to move the PAMI*/
   xTaskCreatePinnedToCore(TaskStrategy, "Task Strategy" ,4096,NULL,2, NULL, 0);
-
 
   waitMatchEnd();
   /* stop movement */
