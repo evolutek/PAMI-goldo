@@ -138,24 +138,6 @@ void strat_pami_2(int side) {
 }
 
 void strat_pami_ninja(int side)
-    turnStepper(-1 * side * 90, 3000, 1000);
-
-    moveStepper(-300, 3000, 1000);
-
-    turnStepper(side * 90, 3000, 1000);
-    servo_drop_l();
-    turnStepper(-1 * side * 90, 3000, 1000);
-
-    moveStepper(-300, 3000, 1000);\
-
-    turnStepper(30 * side, 3000, 1000);
-    servo_drop_r();
-    turnStepper(-1 * (30 + 90) * side, 3000, 1000);
-
-    moveStepper(-200, 3000, 1000);
-}
-
-void start_strat_pami_evo_ninja(int side)
 {
     constexpr int dst = 210;
     constexpr int speed = 3000;

@@ -228,9 +228,14 @@ void setup() {
   
   startMatchTimer(matchInitTime);
 
-  waitPreparationStart();
-  xTaskCreatePinnedToCore(TaskPreparationStrategy, "Task Preparation Strategy" ,4096,NULL,2, NULL, 0);
-  waitPreparationEnd();
+  if (pami_id != PAMI_NINJA)
+  {
+      waitPreparationStart();
+      xTaskCreatePinnedToCore(TaskPreparationStrategy,
+                              "Task Preparation Strategy", 4096, NULL, 2, NULL,
+                              0);
+      waitPreparationEnd();
+  }
 
   waitStart();
   
